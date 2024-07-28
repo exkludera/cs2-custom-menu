@@ -63,6 +63,11 @@ public static class Menu
             player.PrintToChat(_.Config.Prefix + message);
     }
 
+    public static void PlaySound(CCSPlayerController player, string sound)
+    {
+        player.ExecuteClientCommand($"play {sound}");
+    }
+
     [CommandHelper(minArgs: 0, whoCanExecute: CommandUsage.CLIENT_ONLY)]
     public static void Command_OpenMenus(CCSPlayerController player, CommandInfo info)
     {
@@ -120,8 +125,14 @@ public static class Menu
                 menu.AddMenuOption(option.Title, (player, menuOption) =>
                 {
                     PrintToChat(player, _.Localizer["Selecting", option.Title]);
-                    MenuManager.CloseActiveMenu(player);
+
                     player.ExecuteClientCommandFromServer(option.Command);
+
+                    if (option.Sound.Contains("vsnd"))
+                        PlaySound(player, option.Sound);
+
+                    if (option.CloseMenu)
+                        MenuManager.CloseActiveMenu(player);
                 });
             }
         }
@@ -142,8 +153,14 @@ public static class Menu
                 menu.AddMenuOption(option.Title, (player, menuOption) =>
                 {
                     PrintToChat(player, _.Localizer["Selecting", option.Title]);
-                    MenuManager.CloseActiveMenu(player);
+
                     player.ExecuteClientCommandFromServer(option.Command);
+
+                    if (option.Sound.Contains("vsnd"))
+                        PlaySound(player, option.Sound);
+
+                    if (option.CloseMenu)
+                        MenuManager.CloseActiveMenu(player);
                 });
             }
         }
@@ -164,8 +181,14 @@ public static class Menu
                 menu.Add(option.Title, (player, menuOption) =>
                 {
                     PrintToChat(player, _.Localizer["Selecting", option.Title]);
-                    WasdManager.CloseMenu(player);
+
                     player.ExecuteClientCommandFromServer(option.Command);
+
+                    if (option.Sound.Contains("vsnd"))
+                        PlaySound(player, option.Sound);
+
+                    if (option.CloseMenu)
+                        WasdManager.CloseMenu(player);
                 });
             }
         }

@@ -61,7 +61,9 @@
           "Title": "Example Command",
           "Command": "css_example",
           "Permission": "@css/root",
-          "Team": "terrorist"
+          "Team": "terrorist",
+          "Sound": "sounds/buttons/blip1.vsnd",
+          "CloseMenu": "false"
         }
       ]
     }

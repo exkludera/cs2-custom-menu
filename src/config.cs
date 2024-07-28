@@ -16,6 +16,8 @@ public class Options
     public string Command { get; set; } = "css_example";
     public string Permission { get; set; } = "";
     public string Team { get; set; } = "";
+    public string Sound { get; set; } = "";
+    public bool CloseMenu { get; set; } = true;
 }
 
 public class Config : BasePluginConfig
@@ -39,7 +41,10 @@ public class Config : BasePluginConfig
                 Command = "css_publicmenu",
                 Options = new List<Options>
                 {
-                    new Options { Title = "Example Command", Command = "css" },
+                    new Options {
+                        Title = "Example Command",
+                        Command = "css"
+                    },
                 }
             }
         },
@@ -51,7 +56,10 @@ public class Config : BasePluginConfig
                 Permission = "@css/reservation",
                 Options = new List<Options>
                 {
-                    new Options { Title = "VIP Command", Command = "css_vip" },
+                    new Options {
+                        Title = "VIP Command",
+                        Command = "css_vip"
+                    },
                 }
             }
         },
@@ -64,7 +72,14 @@ public class Config : BasePluginConfig
                 Team = "terrorist",
                 Options = new List<Options>
                 {
-                    new Options { Title = "Example Command", Command = "css_example", Permission = "@css/root", Team = "terrorist" }
+                    new Options {
+                        Title = "Example Command",
+                        Command = "css_example",
+                        Permission = "@css/root",
+                        Team = "terrorist",
+                        Sound = "sounds/buttons/blip1.vsnd",
+                        CloseMenu = false
+                    }
                 }
             }
         },
