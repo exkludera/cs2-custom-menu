@@ -8,7 +8,7 @@
 
 <details>
 	<summary>showcase</summary>
-	<img src="" width="800"> <br>
+	<video src="https://github.com/user-attachments/assets/07574910-1b56-48e4-90de-39342743bdaa">
 </details>
 
 <br>
