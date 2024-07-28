@@ -23,7 +23,8 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
 
         foreach (var menu in Config.Menus)
         {
-            var command = menu.Value.Command;
+            var command = menu.Value.Command.ToLower();
+
             var menuId = menu.Key;
             commandMenuId[command] = menuId;
 
@@ -35,12 +36,11 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
     {
         RemoveListener<OnTick>(Menu.OnTick);
 
+        commandMenuId.Clear();
+
         foreach (var menu in Config.Menus)
         {
-            var command = menu.Value.Command;
-            var menuId = menu.Key;
-            commandMenuId[command] = menuId;
-
+            var command = menu.Value.Command.ToLower();
             RemoveCommand(command, Menu.Command_OpenMenus!);
         }
     }
