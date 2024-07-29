@@ -1,6 +1,10 @@
 {
   "NoPermission": "{red}You don't have permission to this command",
-  "Selecting": "{lightblue}Selecting: {0}",
+  "Selected": "{lightblue}Selected: {0}",
+
+  "ConfirmTitle": "Are you sure?",
+  "ConfirmAccept": "Yes",
+  "ConfirmDecline": "No",
 
   "WASD Menu Prefix": "<font color='green'>",
   "WASD Menu Bottom Text": "<font color='cyan'>[ WASD - To Move ]</font> <br><font color='purple'>[ <img src='https://raw.githubusercontent.com/oqyh/cs2-Kill-Sound-GoldKingZ/main/Resources/tab.gif' class=''> - To Exit ]",

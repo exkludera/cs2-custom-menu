@@ -1,0 +1,41 @@
+{
+  "Prefix": "{green}[Menu]{default}",
+  "Messages": true,
+  "MenuStyle": "html",
+  "Menus": {
+    "1": {
+      "Title": "Admin Menu",
+      "Command": "css_adminmenu",
+      "Permission": "@css/generic",
+      "Options": [
+        {
+          "Title": "Change Map",
+          "Command": "css_adminmenumaps"
+        },
+        {
+          "Title": "Shutdown Server",
+          "Command": "quit",
+          "Confirm": true
+        }
+      ]
+    },
+    "2": {
+      "Title": "Change Map",
+      "Command": "css_adminmenumaps",
+      "Permission": "@css/generic",
+      "Options": [
+        {
+          "Title": "de_mirage",
+          "Command": "map de_mirage",
+          "Confirm": true
+        },
+        {
+          "Title": "de_dust2",
+          "Command": "map de_dust2",
+          "Confirm": true
+        }
+      ]
+    }
+  },
+  "ConfigVersion": 1
+}

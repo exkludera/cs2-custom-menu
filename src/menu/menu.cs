@@ -57,6 +57,43 @@ public static class Menu
         }
     }
 
+    public static void OnTick()
+    {
+        foreach (WasdMenuPlayer? player in Players.Values.Where(p => p.MainMenu != null))
+        {
+            if ((player.Buttons & PlayerButtons.Forward) == 0 && (player.player.Buttons & PlayerButtons.Forward) != 0)
+            {
+                player.ScrollUp();
+            }
+            else if ((player.Buttons & PlayerButtons.Back) == 0 && (player.player.Buttons & PlayerButtons.Back) != 0)
+            {
+                player.ScrollDown();
+            }
+            else if ((player.Buttons & PlayerButtons.Moveright) == 0 && (player.player.Buttons & PlayerButtons.Moveright) != 0)
+            {
+                player.Choose();
+            }
+            else if ((player.Buttons & PlayerButtons.Moveleft) == 0 && (player.player.Buttons & PlayerButtons.Moveleft) != 0)
+            {
+                player.CloseSubMenu();
+            }
+
+            if (((long)player.player.Buttons & 8589934592) == 8589934592)
+            {
+                player.OpenMainMenu(null);
+            }
+
+            player.Buttons = player.player.Buttons;
+
+            if (player.CenterHtml != "")
+            {
+                Server.NextFrame(() =>
+                    player.player.PrintToCenterHtml(player.CenterHtml)
+                );
+            }
+        }
+    }
+
     public static void PrintToChat(CCSPlayerController player, string message)
     {
         if (_.Config.Messages)
@@ -120,19 +157,25 @@ public static class Menu
 
         foreach (var option in menuConfig.Options)
         {
-            if (string.IsNullOrEmpty(option.Permission) || AdminManager.PlayerHasPermissions(player, menuConfig.Permission))
+            if (string.IsNullOrEmpty(option.Permission) || AdminManager.PlayerHasPermissions(player, option.Permission))
             {
                 menu.AddMenuOption(option.Title, (player, menuOption) =>
                 {
-                    PrintToChat(player, _.Localizer["Selecting", option.Title]);
+                    if (option.Confirm)
+                    {
+                        ChatMenu confirmMenu = new(_.Localizer["ConfirmTitle"]);
 
-                    player.ExecuteClientCommandFromServer(option.Command);
+                        confirmMenu.AddMenuOption(_.Localizer["ConfirmAccept"], (player, confirmMenuOption) => {
+                            ExecuteOption(player, option);
+                        });
 
-                    if (option.Sound.Contains("vsnd"))
-                        PlaySound(player, option.Sound);
+                        confirmMenu.AddMenuOption(_.Localizer["ConfirmDecline"], (player, confirmMenuOption) => {
+                            MenuManager.OpenChatMenu(player, menu);
+                        });
 
-                    if (option.CloseMenu)
-                        MenuManager.CloseActiveMenu(player);
+                        MenuManager.OpenChatMenu(player, confirmMenu);
+                    }
+                    else ExecuteOption(player, option);
                 });
             }
         }
@@ -148,19 +191,25 @@ public static class Menu
 
         foreach (var option in menuConfig.Options)
         {
-            if (string.IsNullOrEmpty(option.Permission) || AdminManager.PlayerHasPermissions(player, menuConfig.Permission))
+            if (string.IsNullOrEmpty(option.Permission) || AdminManager.PlayerHasPermissions(player, option.Permission))
             {
                 menu.AddMenuOption(option.Title, (player, menuOption) =>
                 {
-                    PrintToChat(player, _.Localizer["Selecting", option.Title]);
+                    if (option.Confirm)
+                    {
+                        CenterHtmlMenu confirmMenu = new(_.Localizer["ConfirmTitle"], _);
 
-                    player.ExecuteClientCommandFromServer(option.Command);
+                        confirmMenu.AddMenuOption(_.Localizer["ConfirmAccept"], (player, confirmMenuOption) => {
+                            ExecuteOption(player, option);
+                        });
 
-                    if (option.Sound.Contains("vsnd"))
-                        PlaySound(player, option.Sound);
+                        confirmMenu.AddMenuOption(_.Localizer["ConfirmDecline"], (player, confirmMenuOption) => {
+                            MenuManager.OpenCenterHtmlMenu(_, player, menu);
+                        });
 
-                    if (option.CloseMenu)
-                        MenuManager.CloseActiveMenu(player);
+                        MenuManager.OpenCenterHtmlMenu(_, player, confirmMenu);
+                    }
+                    else ExecuteOption(player, option);
                 });
             }
         }
@@ -180,15 +229,23 @@ public static class Menu
             {
                 menu.Add(option.Title, (player, menuOption) =>
                 {
-                    PrintToChat(player, _.Localizer["Selecting", option.Title]);
+                    if (option.Confirm)
+                    {
+                        IWasdMenu confirmMenu = WasdManager.CreateMenu(_.Localizer["ConfirmTitle"]);
 
-                    player.ExecuteClientCommandFromServer(option.Command);
+                        confirmMenu.Add(_.Localizer["ConfirmAccept"], (player, confirmMenuOption) =>
+                        {
+                            ExecuteOption(player, option);
+                        });
 
-                    if (option.Sound.Contains("vsnd"))
-                        PlaySound(player, option.Sound);
+                        confirmMenu.Add(_.Localizer["ConfirmDecline"], (player, confirmMenuOption) =>
+                        {
+                            WasdManager.OpenMainMenu(player, menu);
+                        });
 
-                    if (option.CloseMenu)
-                        WasdManager.CloseMenu(player);
+                        WasdManager.OpenMainMenu(player, confirmMenu);
+                    }
+                    else ExecuteOption(player, option);
                 });
             }
         }
@@ -196,40 +253,16 @@ public static class Menu
         WasdManager.OpenMainMenu(player, menu);
     }
 
-    public static void OnTick()
+    private static void ExecuteOption(CCSPlayerController player, Options option)
     {
-        foreach (WasdMenuPlayer? player in Players.Values.Where(p => p.MainMenu != null))
-        {
-            if ((player.Buttons & PlayerButtons.Forward) == 0 && (player.player.Buttons & PlayerButtons.Forward) != 0)
-            {
-                player.ScrollUp();
-            }
-            else if ((player.Buttons & PlayerButtons.Back) == 0 && (player.player.Buttons & PlayerButtons.Back) != 0)
-            {
-                player.ScrollDown();
-            }
-            else if ((player.Buttons & PlayerButtons.Moveright) == 0 && (player.player.Buttons & PlayerButtons.Moveright) != 0)
-            {
-                player.Choose();
-            }
-            else if ((player.Buttons & PlayerButtons.Moveleft) == 0 && (player.player.Buttons & PlayerButtons.Moveleft) != 0)
-            {
-                player.CloseSubMenu();
-            }
+        PrintToChat(player, _.Localizer["Selected", option.Title]);
 
-            if (((long)player.player.Buttons & 8589934592) == 8589934592)
-            {
-                player.OpenMainMenu(null);
-            }
+        player.ExecuteClientCommandFromServer(option.Command);
 
-            player.Buttons = player.player.Buttons;
+        if (option.Sound.Contains("vsnd"))
+            PlaySound(player, option.Sound);
 
-            if (player.CenterHtml != "")
-            {
-                Server.NextFrame(() =>
-                    player.player.PrintToCenterHtml(player.CenterHtml)
-                );
-            }
-        }
+        if (option.CloseMenu)
+            MenuManager.CloseActiveMenu(player);
     }
 }

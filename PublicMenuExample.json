@@ -1,0 +1,22 @@
+{
+  "Prefix": "{green}[Menu]{default}",
+  "Messages": true,
+  "MenuStyle": "html",
+  "Menus": {
+    "1": {
+      "Title": "Public Menu",
+      "Command": "css_publicmenu",
+      "Options": [
+        {
+          "Title": "List Commands",
+          "Command": "css_help"
+        },
+        {
+          "Title": "Guns Menu",
+          "Command": "css_guns"
+        }
+      ]
+    }
+  },
+  "ConfigVersion": 1
+}

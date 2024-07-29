@@ -17,7 +17,8 @@ public class Options
     public string Permission { get; set; } = "";
     public string Team { get; set; } = "";
     public string Sound { get; set; } = "";
-    public bool CloseMenu { get; set; } = true;
+    public bool CloseMenu { get; set; } = false;
+    public bool Confirm { get; set; } = false;
 }
 
 public class Config : BasePluginConfig
@@ -48,7 +49,7 @@ public class Config : BasePluginConfig
                 }
             }
         },
-        {
+        {   
             "2", new MenuItem
             {
                 Title = "VIP Menu",
@@ -78,7 +79,8 @@ public class Config : BasePluginConfig
                         Permission = "@css/root",
                         Team = "terrorist",
                         Sound = "sounds/buttons/blip1.vsnd",
-                        CloseMenu = false
+                        CloseMenu = false,
+                        Confirm = true
                     }
                 }
             }

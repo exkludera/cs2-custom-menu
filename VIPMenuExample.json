@@ -1,0 +1,46 @@
+{
+  "Prefix": "{green}[Menu]{default}",
+  "Messages": true,
+  "MenuStyle": "html",
+  "Menus": {
+    "1": {
+      "Title": "VIP Menu",
+      "Command": "css_vipmenu",
+      "Permission": "@css/reservation",
+      "Options": [
+        {
+          "Title": "VIP Command",
+          "Command": "css_vip"
+        },
+        {
+          "Title": "Trails",
+          "Command": "css_trails"
+        },
+        {
+          "Title": "FOV Menu",
+          "Command": "css_fovmenu"
+        }
+      ]
+    },
+    "2": {
+      "Title": "Change FOV",
+      "Command": "css_fovmenu",
+      "Permission": "@css/reservation",
+      "Options": [
+        {
+          "Title": "Reset FOV",
+          "Command": "css_fov"
+        },
+        {
+          "Title": "FOV 60",
+          "Command": "css_fov 60"
+        },
+        {
+          "Title": "FOV 100",
+          "Command": "css_fov 100"
+        }
+      ]
+    }
+  },
+  "ConfigVersion": 1
+}

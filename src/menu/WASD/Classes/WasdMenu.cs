@@ -4,7 +4,7 @@ namespace CustomMenu;
 
 public class WasdMenu : IWasdMenu
 {
-    public string Title { get; set; } = "";
+    public string? Title { get; set; }  
     public LinkedList<IWasdMenuOption>? Options { get; set; } = new();
     public LinkedListNode<IWasdMenuOption>? Prev { get; set; } = null;
     public LinkedListNode<IWasdMenuOption> Add(string display, Action<CCSPlayerController, IWasdMenuOption> onChoice)
