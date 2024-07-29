@@ -11,7 +11,15 @@ namespace CustomMenu;
 
 public static class Menu
 {
-    public static readonly Dictionary<int, WasdMenuPlayer> Players = [];
+    public static readonly Dictionary<int, WasdMenuPlayer> Players = new();
+
+    private const int oneSecond = 64;
+    private static readonly Dictionary<int, PlayerCooldown> Cooldowns = new();
+    public class PlayerCooldown
+    {
+        public Dictionary<string, int> OptionCooldowns { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> OptionCooldownTicks { get; set; } = new Dictionary<string, int>();
+    }
 
     public static void Load(bool hotReload)
     {
@@ -30,6 +38,8 @@ public static class Menu
                 Buttons = 0
             };
 
+            Cooldowns[player.Slot] = new PlayerCooldown();
+
             return HookResult.Continue;
         });
 
@@ -41,6 +51,7 @@ public static class Menu
                 return HookResult.Continue;
 
             Players.Remove(player.Slot);
+            Cooldowns.Remove(player.Slot);
 
             return HookResult.Continue;
         });
@@ -57,6 +68,8 @@ public static class Menu
                     player = player,
                     Buttons = player.Buttons
                 };
+
+                Cooldowns[player.Slot] = new PlayerCooldown();
             }
         }
     }
@@ -68,29 +81,45 @@ public static class Menu
 
     public static void OnTick()
     {
+        foreach (var playerCooldown in Cooldowns.Values)
+        {
+            var optionsToReset = new List<string>();
+
+            foreach (var optionCooldown in playerCooldown.OptionCooldownTicks)
+            {
+                var optionCommand = optionCooldown.Key;
+                var currentTicks = optionCooldown.Value;
+                var cooldownDuration = playerCooldown.OptionCooldowns[optionCommand];
+
+                if (currentTicks < cooldownDuration * oneSecond)
+                    playerCooldown.OptionCooldownTicks[optionCommand]++;
+
+                else optionsToReset.Add(optionCommand);
+            }
+
+            foreach (var option in optionsToReset)
+            {
+                playerCooldown.OptionCooldownTicks.Remove(option);
+                playerCooldown.OptionCooldowns.Remove(option);
+            }
+        }
+
         foreach (WasdMenuPlayer? player in Players.Values.Where(p => p.MainMenu != null))
         {
             if ((player.Buttons & PlayerButtons.Forward) == 0 && (player.player.Buttons & PlayerButtons.Forward) != 0)
-            {
                 player.ScrollUp();
-            }
+
             else if ((player.Buttons & PlayerButtons.Back) == 0 && (player.player.Buttons & PlayerButtons.Back) != 0)
-            {
                 player.ScrollDown();
-            }
+
             else if ((player.Buttons & PlayerButtons.Moveright) == 0 && (player.player.Buttons & PlayerButtons.Moveright) != 0)
-            {
                 player.Choose();
-            }
+
             else if ((player.Buttons & PlayerButtons.Moveleft) == 0 && (player.player.Buttons & PlayerButtons.Moveleft) != 0)
-            {
                 player.CloseSubMenu();
-            }
 
             if (((long)player.player.Buttons & 8589934592) == 8589934592)
-            {
                 player.OpenMainMenu(null);
-            }
 
             player.Buttons = player.player.Buttons;
 
@@ -264,6 +293,12 @@ public static class Menu
 
     private static void ExecuteOption(CCSPlayerController player, Options option)
     {
+        if (CommandCooldown(player, option.Command, option.Cooldown))
+        {
+            PrintToChat(player, _.Localizer["Cooldown"]);
+            return;
+        }
+
         PrintToChat(player, _.Localizer["Selected", option.Title]);
 
         player.ExecuteClientCommandFromServer(option.Command);
@@ -273,5 +308,30 @@ public static class Menu
 
         if (option.CloseMenu)
             MenuManager.CloseActiveMenu(player);
+
+        if (!Cooldowns.ContainsKey(player.Slot))
+        {
+            Cooldowns[player.Slot] = new PlayerCooldown();
+        }
+
+        if (option.Cooldown > 0)
+        {
+            Cooldowns[player.Slot].OptionCooldowns[option.Command] = option.Cooldown;
+            Cooldowns[player.Slot].OptionCooldownTicks[option.Command] = 0;
+        }
+    }
+
+    public static bool CommandCooldown(CCSPlayerController? player, string command, int cooldown)
+    {
+        if (player == null || !Cooldowns.ContainsKey(player.Slot))
+            return false;
+
+        if (Cooldowns[player.Slot].OptionCooldownTicks.TryGetValue(command, out var cooldownTicks))
+        {
+            if (cooldownTicks < cooldown * oneSecond)
+                return true;
+        }
+
+        return false;
     }
 }

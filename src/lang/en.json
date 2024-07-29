@@ -1,6 +1,7 @@
 {
   "NoPermission": "{red}You don't have permission to this command",
-  "Selected": "{lightblue}Selected: {0}",
+  "Cooldown": "{gray}{0} {red}is on cooldown",
+  "Selected": "{lightblue}Selected: {gray}{0}",
 
   "ConfirmTitle": "Are you sure?",
   "ConfirmAccept": "Yes",

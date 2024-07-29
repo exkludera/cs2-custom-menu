@@ -19,6 +19,7 @@ public class Options
     public string Sound { get; set; } = "";
     public bool CloseMenu { get; set; } = false;
     public bool Confirm { get; set; } = false;
+    public int Cooldown { get; set; } = 0;
 }
 
 public class Config : BasePluginConfig
@@ -80,7 +81,8 @@ public class Config : BasePluginConfig
                         Team = "terrorist",
                         Sound = "sounds/buttons/blip1.vsnd",
                         CloseMenu = false,
-                        Confirm = true
+                        Confirm = true,
+                        Cooldown = 5
                     }
                 }
             }
