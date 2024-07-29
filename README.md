@@ -32,6 +32,7 @@
 **Sound** - Default: `""` (use vsnd like sounds/buttons/blip1.vsnd) <br>
 **CloseMenu** - Default: `false` (close the menu on select) <br>
 **Confirm** - Default: `false` (opens a confirmation menu on select) <br>
+**Cooldown** - Default: `0` (how many seconds until the command can be used again) <br>
 
 ```json
 {
@@ -52,16 +53,18 @@
           "Team": "",
           "Sound": "",
           "CloseMenu": false,
-          "Confirm": false
+          "Confirm": false,
+          "Cooldown": 0
         },
-	{
+        {
           "Title": "Example Command 2",
           "Command": "css_example2",
           "Permission": "@css/root",
           "Team": "T",
           "Sound": "sounds/buttons/blip1.vsnd",
           "CloseMenu": true,
-          "Confirm": true
+          "Confirm": true,
+          "Cooldown": 3
         }
       ]
     }
