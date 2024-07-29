@@ -4,6 +4,7 @@ using CounterStrikeSharp.API.Modules.Admin;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Menu;
 using CounterStrikeSharp.API.Modules.Utils;
+using static CounterStrikeSharp.API.Core.Listeners;
 using static CustomMenu.Plugin;
 
 namespace CustomMenu;
@@ -14,11 +15,13 @@ public static class Menu
 
     public static void Load(bool hotReload)
     {
+        _.RegisterListener<OnTick>(OnTick);
+
         _.RegisterEventHandler<EventPlayerActivate>((@event, info) =>
         {
             CCSPlayerController? player = @event.Userid;
 
-            if (player == null)
+            if (player == null || !player.IsValid || player.IsBot)
                 return HookResult.Continue;
 
             Players[player.Slot] = new WasdMenuPlayer
@@ -34,10 +37,8 @@ public static class Menu
         {
             CCSPlayerController? player = @event.Userid;
 
-            if (player == null)
-            {
+            if (player == null || !player.IsValid || player.IsBot)
                 return HookResult.Continue;
-            }
 
             Players.Remove(player.Slot);
 
@@ -46,15 +47,23 @@ public static class Menu
 
         if (hotReload)
         {
-            foreach (CCSPlayerController pl in Utilities.GetPlayers())
+            foreach (CCSPlayerController player in Utilities.GetPlayers())
             {
-                Players[pl.Slot] = new WasdMenuPlayer
+                if (player.IsBot)
+                    continue;
+
+                Players[player.Slot] = new WasdMenuPlayer
                 {
-                    player = pl,
-                    Buttons = pl.Buttons
+                    player = player,
+                    Buttons = player.Buttons
                 };
             }
         }
+    }
+
+    public static void Unload()
+    {
+        _.RemoveListener<OnTick>(OnTick);
     }
 
     public static void OnTick()

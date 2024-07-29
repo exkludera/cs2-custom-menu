@@ -1,6 +1,5 @@
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Translations;
-using static CounterStrikeSharp.API.Core.Listeners;
 
 namespace CustomMenu;
 
@@ -17,10 +16,6 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
     {
         _ = this;
 
-        RegisterListener<OnTick>(Menu.OnTick);
-
-        Menu.Load(hotReload);
-
         foreach (var menu in Config.Menus)
         {
             var command = menu.Value.Command.ToLower();
@@ -30,12 +25,12 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
 
             AddCommand(command, menu.Value.Title, Menu.Command_OpenMenus!);
         }
+
+        Menu.Load(hotReload);
     }
 
     public override void Unload(bool hotReload)
     {
-        RemoveListener<OnTick>(Menu.OnTick);
-
         commandMenuId.Clear();
 
         foreach (var menu in Config.Menus)
@@ -43,6 +38,8 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
             var command = menu.Value.Command.ToLower();
             RemoveCommand(command, Menu.Command_OpenMenus!);
         }
+
+        Menu.Unload();
     }
 
     public Config Config { get; set; } = new Config();
