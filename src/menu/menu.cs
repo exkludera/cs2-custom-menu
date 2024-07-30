@@ -150,7 +150,7 @@ public static class Menu
         {
             var menuConfig = _.Config.Menus[menuId];
 
-            string permissionFlag = menuConfig.Permission.ToLower();
+            string permission = menuConfig.Permission.ToLower();
 
             string team = menuConfig.Team.ToLower();
 
@@ -158,13 +158,13 @@ public static class Menu
                                (team == "ct" || team == "counterterrorist") && player.Team == CsTeam.CounterTerrorist ||
                                (team == "" || team == "both" || team == "all");
 
-            if ((!string.IsNullOrEmpty(permissionFlag) && !AdminManager.PlayerHasPermissions(player, permissionFlag)) || !isTeamValid)
+            if ((!string.IsNullOrEmpty(permission) && !AdminManager.PlayerHasPermissions(player, permission)) || !isTeamValid)
             {
                 PrintToChat(player, _.Localizer["NoPermission"]);
                 return;
             }
 
-            switch (_.Config.MenuStyle.ToLower())
+            switch (menuConfig.Type.ToLower())
             {
                 case "chat":
                 case "text":

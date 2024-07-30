@@ -3,19 +3,22 @@ using System.Text.Json.Serialization;
 
 public class MenuItem
 {
-    public string Title { get; set; } = "Menu Title";
+    public string Title { get; set; } = "Menu";
+    public string Type { get; set; } = "html";
     public string Command { get; set; } = "css_example";
     public string Permission { get; set; } = "";
     public string Team { get; set; } = "";
+
     public List<Options> Options { get; set; } = new();
 }
 
 public class Options
 {
-    public string Title { get; set; } = "Command Title";
+    public string Title { get; set; } = "Command";
     public string Command { get; set; } = "css_example";
     public string Permission { get; set; } = "";
     public string Team { get; set; } = "";
+
     public string Sound { get; set; } = "";
     public bool CloseMenu { get; set; } = false;
     public bool Confirm { get; set; } = false;
@@ -30,9 +33,6 @@ public class Config : BasePluginConfig
     [JsonPropertyName("Messages")]
     public bool Messages { get; set; } = true;
 
-    [JsonPropertyName("MenuStyle")]
-    public string MenuStyle { get; set; } = "html";
-
     [JsonPropertyName("Menus")]
     public Dictionary<string, MenuItem> Menus { get; set; } = new()
     {
@@ -40,6 +40,7 @@ public class Config : BasePluginConfig
             "1", new MenuItem
             {
                 Title = "Public Menu",
+                Type = "html",
                 Command = "css_publicmenu",
                 Options = new List<Options>
                 {
@@ -54,6 +55,7 @@ public class Config : BasePluginConfig
             "2", new MenuItem
             {
                 Title = "VIP Menu",
+                Type = "chat",
                 Command = "css_vipmenu",
                 Permission = "@css/reservation",
                 Options = new List<Options>
@@ -69,6 +71,7 @@ public class Config : BasePluginConfig
             "3", new MenuItem
             {
                 Title = "Example Menu",
+                Type = "wasd",
                 Command = "css_examplemenu",
                 Permission = "@css/root",
                 Team = "terrorist",

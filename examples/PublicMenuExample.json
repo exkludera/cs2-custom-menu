@@ -1,10 +1,10 @@
 {
   "Prefix": "{green}[Menu]{default}",
   "Messages": true,
-  "MenuStyle": "html",
   "Menus": {
     "1": {
       "Title": "Public Menu",
+      "Type": "html",
       "Command": "css_publicmenu",
       "Options": [
         {

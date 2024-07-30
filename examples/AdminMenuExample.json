@@ -1,10 +1,10 @@
 {
   "Prefix": "{green}[Menu]{default}",
   "Messages": true,
-  "MenuStyle": "html",
   "Menus": {
     "1": {
       "Title": "Admin Menu",
+      "Type": "html",
       "Command": "css_adminmenu",
       "Permission": "@css/generic",
       "Options": [
@@ -21,6 +21,7 @@
     },
     "2": {
       "Title": "Change Map",
+      "Type": "chat",
       "Command": "css_adminmenumaps",
       "Permission": "@css/generic",
       "Options": [
