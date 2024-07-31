@@ -1,5 +1,4 @@
 ﻿using CounterStrikeSharp.API.Core;
-using System.Text.Json.Serialization;
 
 public class MenuItem
 {
@@ -27,68 +26,7 @@ public class Options
 
 public class Config : BasePluginConfig
 {
-    [JsonPropertyName("Prefix")]
     public string Prefix { get; set; } = "{green}[Menu]{default}";
-
-    [JsonPropertyName("Messages")]
     public bool Messages { get; set; } = true;
-
-    [JsonPropertyName("Menus")]
-    public Dictionary<string, MenuItem> Menus { get; set; } = new()
-    {
-        {
-            "1", new MenuItem
-            {
-                Title = "Public Menu",
-                Type = "html",
-                Command = "css_publicmenu",
-                Options = new List<Options>
-                {
-                    new Options {
-                        Title = "Example Command",
-                        Command = "css"
-                    },
-                }
-            }
-        },
-        {   
-            "2", new MenuItem
-            {
-                Title = "VIP Menu",
-                Type = "chat",
-                Command = "css_vipmenu",
-                Permission = "@css/reservation",
-                Options = new List<Options>
-                {
-                    new Options {
-                        Title = "VIP Command",
-                        Command = "css_vip"
-                    },
-                }
-            }
-        },
-        {
-            "3", new MenuItem
-            {
-                Title = "Example Menu",
-                Type = "wasd",
-                Command = "css_examplemenu",
-                Permission = "@css/root",
-                Team = "terrorist",
-                Options = new List<Options>
-                {
-                    new Options {
-                        Title = "Example Command",
-                        Command = "css_example",
-                        Permission = "@css/root",
-                        Team = "terrorist",
-                        Sound = "sounds/buttons/blip1.vsnd",
-                        CloseMenu = false,
-                        Confirm = true,
-                        Cooldown = 5
-                    }
-                }
-            }
-        },
-    };
+    public Dictionary<string, MenuItem> Menus { get; set; } = new();
 }

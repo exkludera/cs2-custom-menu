@@ -11,7 +11,7 @@ namespace CustomMenu;
 
 public static class Menu
 {
-    public static readonly Dictionary<int, WasdMenuPlayer> Players = new();
+    public static readonly Dictionary<int, WasdMenuPlayer> WasdPlayers = new();
 
     private const int oneSecond = 64;
     private static readonly Dictionary<int, PlayerCooldown> Cooldowns = new();
@@ -32,7 +32,7 @@ public static class Menu
             if (player == null || !player.IsValid || player.IsBot)
                 return HookResult.Continue;
 
-            Players[player.Slot] = new WasdMenuPlayer
+            WasdPlayers[player.Slot] = new WasdMenuPlayer
             {
                 player = player,
                 Buttons = 0
@@ -50,7 +50,7 @@ public static class Menu
             if (player == null || !player.IsValid || player.IsBot)
                 return HookResult.Continue;
 
-            Players.Remove(player.Slot);
+            WasdPlayers.Remove(player.Slot);
             Cooldowns.Remove(player.Slot);
 
             return HookResult.Continue;
@@ -63,13 +63,13 @@ public static class Menu
                 if (player.IsBot)
                     continue;
 
-                Players[player.Slot] = new WasdMenuPlayer
+                WasdPlayers[player.Slot] = new WasdMenuPlayer
                 {
                     player = player,
                     Buttons = player.Buttons
                 };
 
-                Cooldowns[player.Slot] = new PlayerCooldown();
+                //Cooldowns[player.Slot] = new PlayerCooldown();
             }
         }
     }
@@ -77,6 +77,9 @@ public static class Menu
     public static void Unload()
     {
         _.RemoveListener<OnTick>(OnTick);
+
+        WasdPlayers.Clear();
+        Cooldowns.Clear();
     }
 
     public static void OnTick()
@@ -104,7 +107,7 @@ public static class Menu
             }
         }
 
-        foreach (WasdMenuPlayer? player in Players.Values.Where(p => p.MainMenu != null))
+        foreach (WasdMenuPlayer? player in WasdPlayers.Values.Where(p => p.MainMenu != null))
         {
             if ((player.Buttons & PlayerButtons.Forward) == 0 && (player.player.Buttons & PlayerButtons.Forward) != 0)
                 player.ScrollUp();
@@ -301,13 +304,18 @@ public static class Menu
 
         PrintToChat(player, _.Localizer["Selected", option.Title]);
 
-        player.ExecuteClientCommandFromServer(option.Command);
+        var commands = option.Command.Split(',');
+        foreach (var command in commands)
+            player.ExecuteClientCommandFromServer(command.Trim());
 
         if (option.Sound.Contains("vsnd"))
             PlaySound(player, option.Sound);
 
         if (option.CloseMenu)
+        {
             MenuManager.CloseActiveMenu(player);
+            WasdManager.CloseMenu(player);
+        }
 
         if (!Cooldowns.ContainsKey(player.Slot))
         {
