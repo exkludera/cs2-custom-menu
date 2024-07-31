@@ -167,6 +167,9 @@ public static class Menu
                 return;
             }
 
+            MenuManager.CloseActiveMenu(player);
+            WasdManager.CloseMenu(player);
+
             switch (menuConfig.Type.ToLower())
             {
                 case "chat":

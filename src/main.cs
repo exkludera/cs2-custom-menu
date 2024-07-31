@@ -1,5 +1,6 @@
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Translations;
+using CounterStrikeSharp.API.Modules.Entities;
 
 namespace CustomMenu;
 
@@ -18,12 +19,15 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
 
         foreach (var menu in Config.Menus)
         {
-            var command = menu.Value.Command.ToLower();
+            var commands = menu.Value.Command.ToLower();
 
             var menuId = menu.Key;
-            commandMenuId[command] = menuId;
 
-            AddCommand(command, menu.Value.Title, Menu.Command_OpenMenus!);
+            foreach (var command in commands.Split(','))
+            {
+                commandMenuId[command.Trim()] = menuId;
+                AddCommand(command.Trim(), menu.Value.Title, Menu.Command_OpenMenus!);
+            }
         }
 
         Menu.Load(hotReload);
@@ -35,8 +39,10 @@ public partial class Plugin : BasePlugin, IPluginConfig<Config>
 
         foreach (var menu in Config.Menus)
         {
-            var command = menu.Value.Command.ToLower();
-            RemoveCommand(command, Menu.Command_OpenMenus!);
+            var commands = menu.Value.Command.ToLower();
+
+            foreach (var command in commands.Split(','))
+                RemoveCommand(command.Trim(), Menu.Command_OpenMenus!);
         }
 
         Menu.Unload();

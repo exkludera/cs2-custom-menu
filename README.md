@@ -31,7 +31,7 @@
 
 **Title** - Default: `"Menu"` (title of the menu) <br>
 **Type** - Default: `"html"` (options: chat/html/wasd) <br>
-**Command** - Defualt: `css_example` (in options you can use multiple by splitting them with `,`) <br>
+**Command** - Defualt: `css_example` (you can use multiple by splitting them with `,`) <br>
 **Permission** - Default: `""` (empty for no check, @css/reservation for vip) <br>
 **Team** - Default: `""` (T for Terrorist, CT for CounterTerrorist or empty for both) <br>
 
