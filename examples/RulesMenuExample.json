@@ -1,0 +1,37 @@
+{
+  "Prefix": "{green}[Menu]{default}",
+  "Messages": true,
+  "Menus": {
+    "1": {
+      "Title": "Menu Example",
+      "Type": "html",
+      "Command": "css_menu",
+      "Options": [
+        {
+          "Title": "Rules",
+          "Command": "css_rules"
+        }
+      ]
+    },
+    "2": {
+      "Title": "Rules Example",
+      "Type": "wasd",
+      "Command": "css_rules",
+      "Options": [
+        {
+          "Title": "#1 Input rules here, keep it short or it will overflow."
+        },
+        {
+          "Title": "#2 Input rules here, keep it short or it will overflow."
+        },
+        {
+          "Title": "#3 Input rules here, keep it short or it will overflow."
+        },
+        {
+          "Title": "I understand the rules.",
+          "CloseMenu": true
+        }
+      ]
+    }
+  }
+}

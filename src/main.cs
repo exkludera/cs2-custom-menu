@@ -7,7 +7,7 @@ namespace CustomMenu;
 public partial class Plugin : BasePlugin, IPluginConfig<Config>
 {
     public override string ModuleName => "Custom Menu";
-    public override string ModuleVersion => "1.0.5";
+    public override string ModuleVersion => "1.0.6";
     public override string ModuleAuthor => "exkludera";
 
     public static Plugin _ { get; set; } = new();

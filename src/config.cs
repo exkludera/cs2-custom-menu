@@ -4,7 +4,7 @@ public class MenuItem
 {
     public string Title { get; set; } = "Menu";
     public string Type { get; set; } = "html";
-    public string Command { get; set; } = "css_example";
+    public string Command { get; set; } = "";
     public string Permission { get; set; } = "";
     public string Team { get; set; } = "";
 
@@ -14,7 +14,7 @@ public class MenuItem
 public class Options
 {
     public string Title { get; set; } = "Command";
-    public string Command { get; set; } = "css_example";
+    public string Command { get; set; } = "";
     public string Permission { get; set; } = "";
     public string Team { get; set; } = "";
 

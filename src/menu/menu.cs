@@ -305,7 +305,8 @@ public static class Menu
             return;
         }
 
-        PrintToChat(player, _.Localizer["Selected", option.Title]);
+        if (!string.IsNullOrEmpty(option.Command))
+            PrintToChat(player, _.Localizer["Selected", option.Title]);
 
         var commands = option.Command.Split(',');
         foreach (var command in commands)

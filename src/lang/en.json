@@ -1,7 +1,7 @@
 {
   "NoPermission": "{red}You don't have permission to this command",
   "Cooldown": "{red}Option is on cooldown",
-  "Selected": "{default}Selected: {gray}{0}",
+  "Selected": "{default}Selected: {grey}{0}",
 
   "ConfirmTitle": "Are you sure?",
   "ConfirmAccept": "Yes",

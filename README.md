@@ -31,7 +31,7 @@
 
 **Title** - Default: `"Menu"` (title of the menu) <br>
 **Type** - Default: `"html"` (options: chat/html/wasd) <br>
-**Command** - Defualt: `css_example` (you can use multiple by splitting them with `,`) <br>
+**Command** - Defualt: `""` (you can use multiple by splitting them with `,`) <br>
 **Permission** - Default: `""` (empty for no check, @css/reservation for vip) <br>
 **Team** - Default: `""` (T for Terrorist, CT for CounterTerrorist or empty for both) <br>
 
@@ -53,8 +53,8 @@
       "Team": "",
       "Options": [
         {
-          "Title": "Example Command",
-          "Command": "css_example",
+          "Title": "Example Option",
+          "Command": "",
           "Permission": "",
           "Team": "",
           "Sound": "",
@@ -63,7 +63,7 @@
           "Cooldown": 0
         },
         {
-          "Title": "Example Command 2",
+          "Title": "Example Option 2",
           "Command": "css_example2",
           "Permission": "@css/root",
           "Team": "T",
